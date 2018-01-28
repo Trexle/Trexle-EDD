@@ -27,7 +27,7 @@ define( 'EDD_TREXLE_STORE_API_URL', 'https://trexle.com' );
 define( 'EDD_TREXLE_PRODUCT_NAME', 'Trexle Gateway' );
 
 if( class_exists( 'EDD_License' ) ) {
-	$edd_fd_license = new EDD_License( __FILE__, EDD_TREXLE_PRODUCT_NAME, '1.0.3', 'DesignWriteBuild' );
+	$edd_fd_license = new EDD_License( __FILE__, EDD_TREXLE_PRODUCT_NAME, '1.0.3', 'Trexle' );
 }
 
 function edd_fd_textdomain() {
