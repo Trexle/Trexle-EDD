@@ -62,7 +62,7 @@ function edd_trexle_add_settings( $settings ) {
         array(
             'id' => 'trexle_gateway_password',
             'name' => __( 'Gateway Password', 'edd_trexle' ),
-            'desc' => __( 'Enter your Trexle API Private Key', 'edd_trexle' ),
+            'desc' => __( 'Enter your Trexle API Secret Key', 'edd_trexle' ),
             'type' => 'password',
             'size' => 'regular'
         ),
