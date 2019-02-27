@@ -5,7 +5,7 @@ Plugin URI: https://trexle.com/edd-payment-gateways
 Description: Accept credit card payments in EDD by connecting to +100 payment gateway using Trexle.
 Author: DesignWriteBuild and Pippin Williamson and Hossam Hossny
 Author URI: https://trexle.com
-Version: 1.0.4
+Version: 1.0.5
 
 /*
 This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@ define( 'EDD_TREXLE_STORE_API_URL', 'https://trexle.com' );
 define( 'EDD_TREXLE_PRODUCT_NAME', 'Trexle Gateway' );
 
 if( class_exists( 'EDD_License' ) ) {
-    $edd_fd_license = new EDD_License( __FILE__, EDD_TREXLE_PRODUCT_NAME, '1.0.4', 'Trexle' );
+    $edd_fd_license = new EDD_License( __FILE__, EDD_TREXLE_PRODUCT_NAME, '1.0.5', 'Trexle' );
 }
 
 function edd_fd_textdomain() {
@@ -62,7 +62,7 @@ function edd_trexle_add_settings( $settings ) {
         array(
             'id' => 'trexle_gateway_password',
             'name' => __( 'Gateway Password', 'edd_trexle' ),
-            'desc' => __( 'Enter your Trexle API Secret Key', 'edd_trexle' ),
+            'desc' => __( 'Enter your Trexle API Private Key', 'edd_trexle' ),
             'type' => 'password',
             'size' => 'regular'
         ),
@@ -157,9 +157,12 @@ function edd_fd_process_payment( $purchase_data ) {
         }
 
         if ($httpcode == '201') {
+            $response = json_decode($response, true);
             if (isset($response) && !empty($response)) {
                 if (isset($response['response']['success']) && $response['response']['success'] == true) {
                     edd_update_payment_status( $payment, 'complete' );
+                    edd_set_payment_transaction_id( $payment, $response['response']['token'] );
+                    edd_empty_cart();
                     edd_send_to_success_page();
                 } else if ( isset($response['response']['error']) ) {
                     edd_set_error( 'trexle_decline' , sprintf( __( 'Transaction Declined: %s', 'edd_trexle' ), $response['response']['error'] ) );
